@@ -1,5 +1,28 @@
 import java.util.*;
 
+class Student{
+    public void setName(String _name){
+        this.name = _name;
+    }
+    public void setGrade(int _grade){
+        this.grade = _grade;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+    public int getGrade(){
+        return this.grade;
+    }
+
+    public String toString(){
+        return "Name:" + this.name + " Score:" + this.grade;
+    }
+
+    private String name;
+    private int grade;
+}
+
 class Rectangle{
     int a, b;
     Rectangle(int _a, int _b){
@@ -16,20 +39,31 @@ public class Solve{
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         int size = scanner.nextInt();
-        Random random = new Random();
-        ArrayList<Integer> a = new ArrayList<>();
-        for(int i = 0; i < size; ++ i){
-            a.add(random.nextInt());
+        ArrayList<Student> s = new ArrayList<Student>(size);
+        s = init(size);
+
+        Collections.sort(s, new Comparator<Student>() {
+            public int compare(Student s1, Student s2) {
+                return Integer.compare(s2.getGrade(), s1.getGrade());
+            }
+        });
+
+        for(Student stu : s){
+            System.out.println(stu.toString());
+        }
+    }
+
+    public static ArrayList<Student> init(int n){
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Student> s = new ArrayList<Student>(n);
+        for(int i = 0; i < n; ++ i){
+            Student tmp = new Student();
+            tmp.setName(scanner.next());
+            tmp.setGrade(scanner.nextInt());
+            s.add(tmp);
         }
 
-        printArray(a);
-        int push_num = scanner.nextInt();
-
-        insertNewElem(push_num, a);
-        printArray(a);
-
-        System.out.println("Bigger than average: " + getUpper(a));
-        System.out.println("Less than average: " + getLower(a));
+        return s;
     }
 
     private static int getAvg(ArrayList<Integer> a){
