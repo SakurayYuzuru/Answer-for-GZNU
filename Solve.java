@@ -38,19 +38,43 @@ class Rectangle{
 public class Solve{
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
-        int size = scanner.nextInt();
-        ArrayList<Student> s = new ArrayList<Student>(size);
-        s = init(size);
+        String s = scanner.nextLine();
+        String r = new StringBuilder(s).reverse().toString();
 
-        Collections.sort(s, new Comparator<Student>() {
-            public int compare(Student s1, Student s2) {
-                return Integer.compare(s2.getGrade(), s1.getGrade());
+        System.out.println(r);
+    }
+
+    public int alphaCount(String s){
+        int res = 0;
+        for(int i = 0; i < s.length(); ++ i){
+            if(Character.isLetter(s.charAt(i))){
+                res ++;
             }
-        });
-
-        for(Student stu : s){
-            System.out.println(stu.toString());
         }
+
+        return res;
+    }
+
+    public int digitCount(String s){
+        int res = 0;
+        for(int i = 0; i < s.length(); ++ i){
+            if(Character.isDigit(s.charAt(i))){
+                res ++;
+            }
+        }
+
+        return res;
+    }
+
+    public int spaceCount(String s){
+        int res = 0;
+        for(int i = 0; i < s.length(); ++ i){
+            if(Character.isSpaceChar(s.charAt(i))){
+                res ++;
+            }
+        }
+
+        return res;
     }
 
     public static ArrayList<Student> init(int n){
