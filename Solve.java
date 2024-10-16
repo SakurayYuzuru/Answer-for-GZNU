@@ -1,26 +1,79 @@
 import java.util.*;
 
-class Student{
-    public void setName(String _name){
+class Human{
+    private int age;
+    private String name;
+
+    public Human() { }
+    public Human(int _age, String _name){
+        this.age = _age;
         this.name = _name;
     }
-    public void setGrade(int _grade){
-        this.grade = _grade;
+
+    protected void sleep(){
+        System.out.println("8 h / d");
+    }
+
+    protected void eat(){
+        System.out.println("In canteen");
+    }
+
+    public void setName(String _name){
+        this.name = _name;
     }
 
     public String getName(){
         return this.name;
     }
+
+    public String toString(){
+        return " [age=" + age + ", name=" + name + "]";
+    }
+}
+
+class Student extends Human{
+    public Student() {}
+    public Student(int _age, String _name){
+        super(_age, _name);
+    }
+
+    public void setGrade(int _grade){
+        this.grade = _grade;
+    }
+
     public int getGrade(){
         return this.grade;
     }
 
-    public String toString(){
-        return "Name:" + this.name + " Score:" + this.grade;
+    private int grade;
+}
+
+class Teacher extends Human{
+    private double salary;
+
+    public Teacher(int _age, String _name, double _salary){
+        super(_age, _name);
+        this.salary = _salary;
     }
 
-    private String name;
-    private int grade;
+    private void teaching(){
+        System.out.println("Teacher is teaching!");
+    }
+
+    @Override
+    public String toString(){
+        return "Teacher [salary=" + salary + "]"+super.toString();
+    }
+}
+
+class Manager extends Teacher{
+    public Manager(int _age, String _name, double _salary){
+        super(_age, _name, _salary);
+    }
+
+    public void manager(){
+        System.out.println("He is a manager!");
+    }
 }
 
 class Rectangle{
@@ -37,11 +90,55 @@ class Rectangle{
 
 public class Solve{
     public static void main(String[] args){
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.nextLine();
-        String r = new StringBuilder(s).reverse().toString();
+        showClass();
+    }
 
-        System.out.println(r);
+    public static void showClass(){
+        Student student = new Student(20,"BoyuZhang");
+		student.eat();
+		student.sleep();
+		System.out.println(student);
+
+		Teacher teacher=new Teacher(40,"SiLi",100);
+		teacher.sleep();
+		teacher.eat();
+		System.out.println(teacher);
+
+		Manager mt = new Manager(35,"WuWang",200);
+		mt.sleep();
+		mt.eat();
+		mt.manager();
+		System.out.println(mt);
+    }
+
+    public static int statistics(String s){
+        return s.length();
+    }
+
+    public static String sort(String s){
+        String[] str = s.split(" ");
+        Arrays.sort(str);
+        String sorted = String.join(" ", str);
+        return sorted;
+    }
+
+    public static String addString(String s){
+        Scanner in = new Scanner(System.in);
+        String tmp = in.nextLine();
+        return s + tmp;
+    }
+    
+    public static void deleteString(String s){
+        s.replace(s, "");
+    }
+
+    public static boolean findString(String s, String find){
+        return s.contains(find);
+    }
+
+    public static String reverseString(String s){
+        String r = new StringBuilder(s).reverse().toString();
+        return r;
     }
 
     public int alphaCount(String s){
@@ -78,12 +175,12 @@ public class Solve{
     }
 
     public static ArrayList<Student> init(int n){
-        Scanner scanner = new Scanner(System.in);
+        Scanner cin = new Scanner(System.in);
         ArrayList<Student> s = new ArrayList<Student>(n);
         for(int i = 0; i < n; ++ i){
             Student tmp = new Student();
-            tmp.setName(scanner.next());
-            tmp.setGrade(scanner.nextInt());
+            tmp.setName(cin.next());
+            tmp.setGrade(cin.nextInt());
             s.add(tmp);
         }
 
