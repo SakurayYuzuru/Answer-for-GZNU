@@ -1,0 +1,189 @@
+\documentclass[a4paper, 12pt, oneside]{ctexart}
+\usepackage{amsmath, amsthm, amssymb, graphicx}
+\usepackage{xcolor}
+
+\begin{document}
+	\title{计算机组成原理}
+	\section{概论}
+	\subsection{计算机的基本概念}
+	\paragraph{计算机}
+	是一种能够存储程序，通过执行程序指令， 自动、告诉、精确地各种信息进行复杂运算处理，并输出运算结果的一种高科技电子设备。
+	
+	计算机系统通常由硬件和软件两大部分组成。
+	
+	\subsection{冯·诺伊曼体系}
+	\paragraph{设计思想}
+	\begin{enumerate}
+		\item 信息采用二进制来表示。
+		\item 程序存储的思想。
+	\end{enumerate}
+	\paragraph{主要思想}
+	\begin{enumerate}
+		\item 计算机硬件系统由五大部件（存储器、运算器、控制器、输入设备和输出设备）组成
+		\item 计算机中采用二进制形式表示信息（数据、指令）
+		\item \textcolor{red}{采用存储程序的工作方式}
+	\end{enumerate}
+	\paragraph{计算机发展历程}
+	\begin{enumerate}
+		\item 电子管计算机
+		\item 晶体管计算机
+		\item 中小规模集成电路计算机
+		\item 大规模和超大规模集成电路计算机
+	\end{enumerate}
+	\subsection{计算机系统的组织}
+	\paragraph{硬件系统}
+	计算机硬件系统是由存储器、运算器、控制器、输入设备和输出设备五大部件组成的。
+	\paragraph{软件系统}
+	\begin{enumerate}
+		\item 操作系统
+		\item 语言处理系统
+		\item 数据库管理系统
+	\end{enumerate}
+	\paragraph{层次结构}
+	\begin{enumerate}
+		\item 软件部分
+			\begin{enumerate}
+				\item 系统分级器
+				\item 用户程序级
+				\item 应用程序
+				\item 语言处理程序
+				\item 操作系统级
+			\end{enumerate} 	
+		\item 硬、软界面 
+				\begin{enumerate}
+					\item 传统机器级
+				\end{enumerate}
+		\item 硬件部分 
+			\begin{enumerate}
+				\item 微程序级
+				\item 逻辑部件级
+			\end{enumerate}
+	\end{enumerate}
+	\subsection{计算机性能的主要评价指标}
+	\paragraph{评价计算机综合性能的指标}
+	主要包括CPU的综合性能、存储容量、数据的输入/输出能力（即I/O吞吐率）、响应时间和功耗等。
+	\subsubsection{基本字长}
+	基本字长一般是指处理器中参加一次定点运算的操作数的位数。\\
+	基本字长影响着计算的精度、硬件的成本，甚至对指令系统功能也有影响
+	\subsubsection{外频}
+	外频也叫外部频率或基频， 有时也成为系统时钟频率， 是至主板上的振荡器输出的时钟频率，也是计算机中一切硬件不见工作所依据的基准时钟信号。
+	\subsubsection{数据通路宽度与数据传输率}
+	这两个指标主要用来衡量计算机及其部件的数据传输能力
+	\paragraph{数据通路宽度}
+	是指数据总线一次能并行传输的数据位数，它会直接影响计算机的性能
+	\paragraph{数据传输率}
+	也叫比特率， 是指单位时间内信道的数据传输量，它的基本单位是$bps$\\
+		$DTR = \frac{D}{R} = W \dot f(bps) $
+	
+	\section{数据的校验}
+	\paragraph{海明校验}
+	是一种多重奇偶校验，即将代码按照一定规律组织为若干小组，分组进行奇偶校验，各组的检错信息组成一个指误字。
+		
+	\section{CPU子系统}
+	\subsection{硬件结构模型}
+	\paragraph{硬件结构模型}
+	通常包含运算部件、缓存部件、寄存器组、微命令产生部件（即控制部件）、时序系统等。
+	\paragraph{运算部件}
+	基本任务是对操作数进行加工处理。
+	\paragraph{缓存部件}
+	提高CPU的访存效率。
+	\paragraph{寄存器组（堆）}
+	暂时存储大量的控制信息和数据信息。
+	\paragraph{控制部件}
+	主要功能是对指令进行译码， 并且根据实训信号和外部输入的状态信号，产生指令过程中每个时钟周期所需要的控制信号。
+	\paragraph{时序系统}
+	周期、节拍、脉冲等时间信号称为时序信号，产生实训信号的部件称为时序发生器或时序系统，它是由一个晶体振荡器和一组计数倍频逻辑组成的。
+	\subsection{指令系统}
+	\subsubsection{CISC 和 RISC}
+	计算机主要由两种设计模式：复杂指令集计算机（CISC）和精简指令集计算机（RISC）
+	\paragraph{CISC}
+	CISC的特点是：指令系统庞大，之龄宫嗯复杂， 指令格式多变，寻址方式也很多；绝大多数指令需要多个时钟周期才能完成；各种指令几乎都可以访问存储器；主要采用微程序控制方式；设置有少量专用寄存器；难以用优化编译技术生成高效的目标代码。
+	\paragraph{RISC}
+	RISC不但精简了指令系统，其指令格式更统一、指令种类更少，寻址方式更简单，而且采用了“超标量和超流水线”结构，大大增加了CPU的并行处理能力，处理速率提高很多。
+	\subsection{指令的一般格式}
+	\paragraph{指令中的基本信息}
+	\begin{enumerate}
+		\item 操作码
+		\item 操作数或操作数的地址
+		\item 存放运算结果的地址
+		\item 后继指令地址
+	\end{enumerate}
+	\paragraph{指令的地址结构}
+	三地址指令、二地址指令、一地址指令、零地址指令
+	\subsubsection{常见寻址形式}
+	\paragraph{寄存器直接寻址}
+	\paragraph{寄存器间接寻址}
+	\subsubsection{指令功能和类型}
+	\begin{enumerate}
+		\item 传输类指令
+		\item 访存指令
+		\item I/O指令
+		\item 算术逻辑运算指令
+		\item 程序控制类指令
+	\end{enumerate}
+	\subsection{MIPS指令架构}
+	\begin{enumerate}
+		\item R型指令
+		\item I型指令
+		\item J型指令
+	\end{enumerate}
+	\paragraph{指令集功能分析}
+	\subsection{单周期模式}
+	单周期CPU是指任何一条指令无论其执行何种操作，都只能固定分配一个始终周期，指令完成的全部操作必须在这个时钟周期内完成
+	
+	\section{存储子系统}
+	\subsection{存储系统的层次结构}
+	高速缓存-主存-辅存\\
+	求ROM芯片数：ceil(存储器容量 / 芯片容量)\\
+	求RAM芯片数：ceil(固化区容量 / 芯片容量)\\
+	地址总线均从$A_{0}$开始计数，占据数量看芯片容量
+	\paragraph{片选信号逻辑式}
+	\begin{enumerate}
+		\item 确定所需的ROM块数以及RAM块数的总和n
+		\item 确定已经消耗的地址线m
+		\item 得出可用地址线$A_{m}, ..., A_{m + n}$
+		\item 根据ROM或RAM型号选择所需的选片地址， 若该种型号的芯片容量小于最大芯片容量，除去所需的地址线数，其他地址线为$true$
+	\end{enumerate}
+	\subsection{存储器的分类}
+	\paragraph{物理与虚拟存储器}
+	虚拟存储器是依靠操作系统和硬件支持，并通过操作系统的存储管理技术来实现的，能够从逻辑上为用户提供一个比物理存储容量大很多、可寻址的存储空间。
+	\paragraph{物理存储机制}
+	\begin{enumerate}
+		\item 半导体存储器
+		\begin{enumerate}
+			\item 静态存储器
+			\item 动态存储器
+		\end{enumerate}
+		\item 磁表面存储器
+		\item 光盘存储器
+	\end{enumerate}
+	\subsection{磁盘}
+	$V_{track} =  n_{fan} \cdot n_{bit}\\
+	V_{CD} = n_{Cylinder} \cdot n_{face} \cdot V_{track}\\
+	v_{CDrotate} = \frac{v_{rotate}}{60s}\\
+	D_{CD} = v_{CDrotate} \cdot \frac{V_{CD}}{1s}\\
+	V_{normal} = \frac{r_{valid outside radius} - r_{valid inside radius}}{2} \cdot V_{CD}$
+	
+	
+	\section{总线与I/O子系统}
+	\subsection{总线与接口}
+	\paragraph{总线}
+	是一种用来链接计算机各功能部件并承担部件之间信息传输任务的公共信息通道，能在各部件之间传输数据和控制命令。
+	\paragraph{总线带宽}
+	是指总线在单位时间内可以传输的数据总数。
+	\subsection{中断处理模式}
+	\paragraph{向量中断}
+	是指这样一种中断响应方式：将各个中断服务程序的入口地址（或包括状态字）组织成中断向量表；响应中断时，由硬件直接产生中断源的向量地址；按该地址访问中断向量表，从表中读取五福程序入口地址和PSW， 由此转向中断服务并执行之。
+	\paragraph{非向量中断}
+	是指这样一种中断响应方式：CPU响应中断时只产生一个固定的地址，由此读取中断查询程序（也称为中断服务总程序）的入口地址，然后转向查询程序并执行；通过软件查询方式，确定被优先批准的中断源，然后获取与之对应的中断服务程序入口地址，分支进入相应的中断服务程序。
+	\subsection{DMA基本概念}
+	\paragraph{DMA}即直接存储器访问，几乎是所有计算机系统都具备的一种重要的I/O工作机制，是指这样的一种传输控制方式：依靠硬件直接在主存与外部设备之间进行数据传输，在数据的I/O传输过程中不需要CPU执行程序来干预
+	\paragraph{在DMA的初始化阶段中，主要应完成哪些任务？}
+	\begin{enumerate}
+		\item 向接口送出I/O设备的寻址信息。
+		\item 向DMA控制器送出控制字，主要是数据的传输方向，输入主存还是从主存输出
+		\item 向DMA控制器送出主存缓存区首地址。 数据的输入或输出往往需在主存储器中设置相应的缓冲区，这是一段连续的存储区，为此在初始化时送出其首地址。
+		\item 向DMA控制器送出交换量，即数据的传输量。视设备的需要，传输量可以是字节数、字数、数据块数。
+	\end{enumerate}
+	
+\end{document}
