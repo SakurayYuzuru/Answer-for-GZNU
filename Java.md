@@ -17,20 +17,20 @@ interface Shape{
 然后逐步实现其他图形
 ```java
 class Triangle implements Shape {
-    float a, b, c;
-    Triangle(float _a, float _b, float _c){
+    double a, b, c;
+    Triangle(double _a, double _b, double _c){
         this.a = _a;
         this.b = _b;
         this.c = _c;
     }
 
     @Override
-    public float Area(){
-        // Using Hailun's function
-        return 1.0f;
+    public double Area(){
+        double p = (this.a * this.b * this.c) / 2;
+        return Math.pow(p * (p - this.a) * (p - this.b) * (p - this.c), 0.5);
     }
     @Override
-    public float C(){
+    public double C(){
         return this.a + this.b + this.c;
     }
     @Override
@@ -84,7 +84,8 @@ enum Graphics implements Shape{
         @Override
         public float Area(){
             // Using Hailun's function
-            return 1.0f;
+            double p = (this.a * this.b * this.c) / 2;
+            return Math.pow(p * (p - this.a) * (p - this.b) * (p - this.c), 0.5);
         }
         @Override
         public float C(){
@@ -142,9 +143,9 @@ for(var i : Object){ }
 ### 编程题1: 随机数 + 区间查询
 ```java
         int[] a = new int[50];
-        Random random = new Random(100);
+        Random random = new Random();
         for(var i : a){
-            i = random.nextInt();
+            i = random.nextInt(101);
         }
         int up = 0, down = 0;
         for(var i : a){
