@@ -113,11 +113,11 @@ enum Graphics implements Shape{
     Circle(r){
         @Override
         public float Area(){
-            return this.x * this.y;
+            return PI * this.r * this.r;
         }
         @Override
         public float C(){
-            return 2 * (this.x + this.y);
+            return 2 * this.r * PI;
         }
         @Override
         public void printInfo(){
