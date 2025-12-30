@@ -58,11 +58,10 @@
    }
    ```
 3. 用递归程序写出求解Ackerman函数，此函数的输入和输出是什么？并在主函数对其进行调用  
-   $A(n, m) = \begin{cases}
-      A(1, 0) = 2 \\
-      A(0, m) = 1 \space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space m >= 0 \\
-      A(n, 0) = n + 2 \space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space\space n >= 2 \\
-      A(n, m) = A(A(n - 1, m), m - 1) \space\space\space\space n, m >= 1
+   $A(m, n) = \begin{cases}
+      n + 1 &\text{if } m = 0 \\
+      A(m - 1, 1) &\text{if } m \gt 0 &\text{and } n = 0 \\
+      A(m - 1, A(m, n - 1)) &\text{if } m \gt 0 &\text{and } n \gt 0
    \end{cases}$
    ```java
    public class Main {
