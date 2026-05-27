@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${editing} ? '图书管理系统 - 编辑图书' : '图书管理系统 - 新增图书'">图书管理系统 - 图书表单</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <div class="brand-tag">Book Inventory</div>
+            <h1 th:text="${editing} ? '编辑图书' : '新增图书'">新增图书</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <span>当前登录</span>
+                <strong th:text="${loginUser.nickname}">系统管理员</strong>
+                <em class="role-badge">管理员</em>
+            </div>
+            <a class="ghost-btn" th:href="@{/logout}">退出登录</a>
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <a class="tab-item" th:href="@{/dashboard}">图书列表</a>
+        <a class="tab-item" th:href="@{/borrows}">借阅管理</a>
+        <a class="tab-item" th:href="@{/readers}">读者管理</a>
+    </nav>
+
+    <section class="panel form-panel single-panel">
+        <div class="panel-header">
+            <h2 th:text="${editing} ? '编辑图书资料' : '录入新图书资料'">录入新图书资料</h2>
+            <span th:text="${editing} ? '修改完成后点击保存' : '填写完整信息后点击添加图书'">填写完整信息后点击添加图书</span>
+        </div>
+        <div th:if="${formError}" class="alert" th:text="${formError}"></div>
+        <form class="book-form two-col" method="post" th:action="@{/books/save}" th:object="${bookForm}">
+            <input type="hidden" th:field="*{id}">
+            <label>
+                <span>书名</span>
+                <input type="text" th:field="*{title}" placeholder="例如：Java 编程思想" required>
+            </label>
+            <label>
+                <span>作者</span>
+                <input type="text" th:field="*{author}" placeholder="请输入作者" required>
+            </label>
+            <label>
+                <span>分类</span>
+                <input type="text" th:field="*{category}" placeholder="例如：文学 / 编程 / 历史" required>
+            </label>
+            <label>
+                <span>ISBN</span>
+                <input type="text" th:field="*{isbn}" placeholder="请输入 ISBN" required>
+            </label>
+            <label>
+                <span>出版社</span>
+                <input type="text" th:field="*{publisher}" placeholder="请输入出版社">
+            </label>
+            <label>
+                <span>出版日期</span>
+                <input type="date" th:field="*{publishDate}">
+            </label>
+            <label>
+                <span>库存</span>
+                <input type="number" min="0" th:field="*{stock}" required>
+            </label>
+            <label class="full-row">
+                <span>简介</span>
+                <textarea th:field="*{description}" rows="4" placeholder="请输入图书简介"></textarea>
+            </label>
+            <div class="form-actions full-row">
+                <button type="submit" class="primary-btn" th:text="${editing} ? '保存修改' : '添加图书'">添加图书</button>
+                <a class="ghost-btn" th:href="@{/dashboard}">返回列表</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

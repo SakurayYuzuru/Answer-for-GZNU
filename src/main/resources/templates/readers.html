@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 读者管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <div class="brand-tag">Reader Management</div>
+            <h1>读者管理</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <span>当前登录</span>
+                <strong th:text="${loginUser.nickname}">系统管理员</strong>
+                <em class="role-badge" th:text="${isAdmin} ? '管理员' : '普通用户'">管理员</em>
+            </div>
+            <a class="ghost-btn" th:href="@{/logout}">退出登录</a>
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <a class="tab-item" th:href="@{/dashboard}">图书列表</a>
+        <a class="tab-item" th:href="@{/borrows}">借阅管理</a>
+        <a class="tab-item active" th:href="@{/readers}">读者管理</a>
+    </nav>
+
+    <section class="panel list-panel">
+        <div class="panel-header panel-header-inline">
+            <div>
+                <h2>读者列表</h2>
+                <span th:text="'当前共 ' + ${total} + ' 位读者'">当前共 0 位读者</span>
+            </div>
+            <form class="search-bar" method="get" th:action="@{/readers}">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="搜索用户名、昵称或邮箱">
+                <button type="submit">搜索</button>
+            </form>
+        </div>
+
+        <div class="action-bar" th:if="${isAdmin}">
+            <a class="primary-btn" th:href="@{/readers/new}">新增读者</a>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>昵称</th>
+                    <th>邮箱</th>
+                    <th>角色</th>
+                    <th th:if="${isAdmin}">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(readers)}">
+                    <td th:colspan="${isAdmin} ? 6 : 5" class="empty-cell">暂无读者数据</td>
+                </tr>
+                <tr th:each="reader : ${readers}">
+                    <td th:text="${reader.id}">1</td>
+                    <td th:text="${reader.username}">reader01</td>
+                    <td th:text="${reader.nickname}">读者昵称</td>
+                    <td th:text="${reader.email} ?: '-'">reader01@example.com</td>
+                    <td th:text="${reader.role == 'USER' ? '普通读者' : '管理员'}">普通读者</td>
+                    <td class="action-cell" th:if="${isAdmin}">
+                        <a class="table-link" th:href="@{'/readers/edit/' + ${reader.id}}">编辑</a>
+                        <a class="table-link danger"
+                           th:href="@{'/readers/delete/' + ${reader.id}}"
+                           onclick="return confirm('确认删除这位读者吗？')">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+</body>
+</html>

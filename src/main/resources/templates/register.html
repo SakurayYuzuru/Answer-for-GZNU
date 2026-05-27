@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 注册</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+<div class="login-shell">
+    <div class="login-panel">
+        <div class="brand-block">
+            <span class="brand-tag">Register</span>
+            <h1>创建账号</h1>
+            <p>注册时可选择管理员或普通用户。管理员拥有图书、借阅和读者管理权限，普通用户可登录查看系统内容。</p>
+        </div>
+        <form class="login-form" method="post" th:action="@{/doRegister}">
+            <h2>用户注册</h2>
+            <div th:if="${error}" class="alert" th:text="${error}"></div>
+            <label>
+                <span>用户名</span>
+                <input type="text" name="username" placeholder="请输入用户名" th:value="${username}">
+            </label>
+            <label>
+                <span>昵称</span>
+                <input type="text" name="nickname" placeholder="请输入昵称" th:value="${nickname}">
+            </label>
+            <label>
+                <span>邮箱</span>
+                <input type="email" name="email" placeholder="请输入邮箱" th:value="${email}">
+            </label>
+            <label>
+                <span>密码</span>
+                <input type="password" name="password" placeholder="请输入密码">
+            </label>
+            <label>
+                <span>确认密码</span>
+                <input type="password" name="confirmPassword" placeholder="请再次输入密码">
+            </label>
+            <div class="role-group">
+                <span class="role-title">注册角色</span>
+                <label class="role-option">
+                    <input type="radio" name="role" value="ADMIN" th:checked="${role == null or role == 'ADMIN'}">
+                    <span>管理员</span>
+                </label>
+                <label class="role-option">
+                    <input type="radio" name="role" value="USER" th:checked="${role == 'USER'}">
+                    <span>普通用户</span>
+                </label>
+            </div>
+            <button type="submit">提交注册</button>
+            <a class="text-link" th:href="@{/login}">已有账号？返回登录</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

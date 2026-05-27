@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 登录</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+<div class="login-shell">
+    <div class="login-panel">
+        <div class="brand-block">
+            <span class="brand-tag">Library Portal</span>
+            <h1>图书管理系统</h1>
+            <p>支持管理员和普通用户登录。管理员可维护图书、借阅与读者资料，普通用户可浏览系统信息。</p>
+        </div>
+        <form class="login-form" method="post" th:action="@{/doLogin}">
+            <h2>账号登录</h2>
+            <div th:if="${error}" class="alert" th:text="${error}"></div>
+            <div th:if="${success}" class="success-alert" th:text="${success}"></div>
+            <label>
+                <span>用户名</span>
+                <input type="text" name="username" placeholder="请输入用户名" value="admin">
+            </label>
+            <label>
+                <span>密码</span>
+                <input type="password" name="password" placeholder="请输入密码" value="123456">
+            </label>
+            <button type="submit">登录系统</button>
+            <a class="text-link" th:href="@{/register}">没有账号？去注册</a>
+            <div class="hint">默认管理员：admin / 123456</div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${editing} ? '图书管理系统 - 编辑读者' : '图书管理系统 - 新增读者'">读者表单</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <div class="brand-tag">Reader Form</div>
+            <h1 th:text="${editing} ? '编辑读者' : '新增读者'">新增读者</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <span>当前登录</span>
+                <strong th:text="${loginUser.nickname}">系统管理员</strong>
+                <em class="role-badge">管理员</em>
+            </div>
+            <a class="ghost-btn" th:href="@{/logout}">退出登录</a>
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <a class="tab-item" th:href="@{/dashboard}">图书列表</a>
+        <a class="tab-item" th:href="@{/borrows}">借阅管理</a>
+        <a class="tab-item active" th:href="@{/readers}">读者管理</a>
+    </nav>
+
+    <section class="panel form-panel single-panel">
+        <div class="panel-header">
+            <h2 th:text="${editing} ? '编辑读者资料' : '创建读者账号'">创建读者账号</h2>
+            <span th:text="${editing} ? '密码留空表示保持当前密码不变。' : '请为新读者设置初始密码。'">
+                请为新读者设置初始密码。
+            </span>
+        </div>
+
+        <div th:if="${formError}" class="alert" th:text="${formError}"></div>
+
+        <form class="book-form two-col" method="post" th:action="@{/readers/save}" th:object="${readerForm}">
+            <input type="hidden" th:field="*{id}">
+
+            <label>
+                <span>用户名</span>
+                <input type="text" th:field="*{username}" placeholder="请输入用户名" required>
+            </label>
+
+            <label>
+                <span>昵称</span>
+                <input type="text" th:field="*{nickname}" placeholder="请输入昵称" required>
+            </label>
+
+            <label>
+                <span>邮箱</span>
+                <input type="email" th:field="*{email}" placeholder="请输入邮箱" required>
+            </label>
+
+            <label>
+                <span th:text="${editing} ? '重置密码' : '初始密码'">初始密码</span>
+                <input type="password"
+                       name="password"
+                       th:placeholder="${editing} ? '不修改请留空' : '请输入初始密码'">
+            </label>
+
+            <div class="form-actions full-row">
+                <button type="submit" class="primary-btn" th:text="${editing} ? '保存修改' : '添加读者'">添加读者</button>
+                <a class="ghost-btn" th:href="@{/readers}">返回读者管理</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

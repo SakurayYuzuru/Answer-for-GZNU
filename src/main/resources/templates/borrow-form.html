@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${editing} ? '图书管理系统 - 修改借阅' : '图书管理系统 - 新增借阅'">借阅表单</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <div class="brand-tag">Borrow Form</div>
+            <h1 th:text="${editing} ? '修改借阅' : '新增借阅'">新增借阅</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <span>当前登录</span>
+                <strong th:text="${loginUser.nickname}">系统管理员</strong>
+                <em class="role-badge">管理员</em>
+            </div>
+            <a class="ghost-btn" th:href="@{/logout}">退出登录</a>
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <a class="tab-item" th:href="@{/dashboard}">图书列表</a>
+        <a class="tab-item active" th:href="@{/borrows}">借阅管理</a>
+        <a class="tab-item" th:href="@{/readers}">读者管理</a>
+    </nav>
+
+    <section class="panel form-panel single-panel">
+        <div class="panel-header">
+            <h2 th:text="${editing} ? '编辑借阅信息' : '登记新的借阅记录'">登记新的借阅记录</h2>
+            <span th:text="${editing} ? '修改完成后保存并返回借阅管理页' : '填写信息后保存并返回借阅管理页'">填写信息后保存并返回借阅管理页</span>
+        </div>
+        <div th:if="${formError}" class="alert" th:text="${formError}"></div>
+        <form class="book-form two-col" method="post" th:action="@{/borrows/save}">
+            <input type="hidden" name="id" th:value="${record != null ? record.id : ''}">
+            <label>
+                <span>图书</span>
+                <select name="bookId" required>
+                    <option value="">请选择图书</option>
+                    <option th:each="book : ${books}"
+                            th:value="${book.id}"
+                            th:text="${book.title + '（库存 ' + book.stock + '）'}"
+                            th:selected="${record != null and record.book != null and record.book.id == book.id}">
+                    </option>
+                </select>
+            </label>
+            <label>
+                <span>借阅人</span>
+                <input type="text" name="borrowerName" placeholder="请输入借阅人姓名" th:value="${record != null ? record.borrowerName : ''}" required>
+            </label>
+            <label>
+                <span>联系电话</span>
+                <input type="text" name="borrowerPhone" placeholder="可选" th:value="${record != null ? record.borrowerPhone : ''}">
+            </label>
+            <label>
+                <span>借出日期</span>
+                <input type="date" name="borrowDate" th:value="${record != null ? record.borrowDate : ''}">
+            </label>
+            <label>
+                <span>应还日期</span>
+                <input type="date" name="dueDate" th:value="${record != null ? record.dueDate : ''}">
+            </label>
+            <label class="full-row">
+                <span>备注</span>
+                <textarea name="remark" rows="3" placeholder="可选" th:text="${record != null ? record.remark : ''}"></textarea>
+            </label>
+            <div class="form-actions full-row">
+                <button type="submit" class="primary-btn" th:text="${editing} ? '保存修改' : '登记借阅'">登记借阅</button>
+                <a class="ghost-btn" th:href="@{/borrows}">返回借阅管理</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

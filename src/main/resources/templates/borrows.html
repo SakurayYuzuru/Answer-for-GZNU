@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 借阅管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <div class="brand-tag">Borrow Management</div>
+            <h1>借阅管理</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <span>当前登录</span>
+                <strong th:text="${loginUser.nickname}">系统管理员</strong>
+                <em class="role-badge" th:text="${isAdmin} ? '管理员' : '普通用户'">管理员</em>
+            </div>
+            <a class="ghost-btn" th:href="@{/logout}">退出登录</a>
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <a class="tab-item" th:href="@{/dashboard}">图书列表</a>
+        <a class="tab-item active" th:href="@{/borrows}">借阅管理</a>
+        <a class="tab-item" th:href="@{/readers}">读者管理</a>
+    </nav>
+
+    <section class="panel list-panel">
+        <div class="panel-header panel-header-inline">
+            <div>
+                <h2>借阅记录</h2>
+                <span th:text="'当前共 ' + ${total} + ' 条记录，每页 10 条'">当前共 0 条记录，每页 10 条</span>
+            </div>
+            <form class="search-bar search-bar-wide" method="get" th:action="@{/borrows}">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="搜索借阅人、书名或 ISBN">
+                <select name="status">
+                    <option value="">全部状态</option>
+                    <option th:value="${borrowedStatus}" th:selected="${status == borrowedStatus}">在借中</option>
+                    <option th:value="${returnedStatus}" th:selected="${status == returnedStatus}">已归还</option>
+                </select>
+                <button type="submit">搜索</button>
+            </form>
+        </div>
+
+        <div class="action-bar" th:if="${isAdmin}">
+            <a class="primary-btn" th:href="@{/borrows/new}">新增借阅</a>
+        </div>
+
+        <div th:if="${formError}" class="alert" th:text="${formError}"></div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>图书</th>
+                    <th>借阅人</th>
+                    <th>借出日期</th>
+                    <th>应还日期</th>
+                    <th>归还日期</th>
+                    <th>状态</th>
+                    <th>操作人</th>
+                    <th th:if="${isAdmin}">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(records)}">
+                    <td th:colspan="${isAdmin} ? 9 : 8" class="empty-cell">暂无借阅记录</td>
+                </tr>
+                <tr th:each="record : ${records}">
+                    <td th:text="${record.id}">1</td>
+                    <td>
+                        <div th:text="${record.book.title}">图书名</div>
+                        <div class="sub-text" th:text="${'ISBN: ' + record.book.isbn}">ISBN</div>
+                    </td>
+                    <td>
+                        <div th:text="${record.borrowerName}">借阅人</div>
+                        <div class="sub-text" th:text="${record.borrowerPhone} ?: '-'">电话</div>
+                    </td>
+                    <td th:text="${record.borrowDate}">2026-05-01</td>
+                    <td th:text="${record.dueDate} ?: '-'">-</td>
+                    <td th:text="${record.returnDate} ?: '-'">-</td>
+                    <td>
+                        <span th:if="${record.status == borrowedStatus}" class="status-chip borrowed">在借中</span>
+                        <span th:if="${record.status == returnedStatus}" class="status-chip returned">已归还</span>
+                    </td>
+                    <td th:text="${record.operatorUsername} ?: '-'">admin</td>
+                    <td class="action-cell" th:if="${isAdmin}">
+                        <a class="table-link" th:if="${record.status == borrowedStatus}" th:href="@{'/borrows/edit/' + ${record.id}}">修改借阅</a>
+                        <a class="table-link" th:if="${record.status == borrowedStatus}" th:href="@{'/borrows/return/' + ${record.id}}">归还</a>
+                        <a class="table-link danger" th:href="@{'/borrows/delete/' + ${record.id}}" onclick="return confirm('确认删除这条借阅记录吗？')">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-bar" th:if="${borrowPage.totalPages > 0}">
+            <a class="page-btn"
+               th:if="${borrowPage.hasPrevious()}"
+               th:href="@{/borrows(page=${currentPage - 1}, status=${status}, keyword=${keyword})}">上一页</a>
+            <span class="page-btn disabled" th:if="${!borrowPage.hasPrevious()}">上一页</span>
+            <span class="page-info" th:text="${currentPage + 1} + ' / ' + ${borrowPage.totalPages}">1 / 1</span>
+            <div class="page-numbers">
+                <a class="page-btn"
+                   th:each="pageNumber : ${#numbers.sequence(0, borrowPage.totalPages - 1)}"
+                   th:classappend="${pageNumber == currentPage} ? ' active' : ''"
+                   th:href="@{/borrows(page=${pageNumber}, status=${status}, keyword=${keyword})}"
+                   th:text="${pageNumber + 1}">1</a>
+            </div>
+            <a class="page-btn"
+               th:if="${borrowPage.hasNext()}"
+               th:href="@{/borrows(page=${currentPage + 1}, status=${status}, keyword=${keyword})}">下一页</a>
+            <span class="page-btn disabled" th:if="${!borrowPage.hasNext()}">下一页</span>
+        </div>
+    </section>
+</div>
+</body>
+</html>

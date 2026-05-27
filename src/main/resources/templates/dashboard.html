@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 图书列表</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-shell">
+    <header class="topbar">
+        <div>
+            <div class="brand-tag">Book Inventory</div>
+            <h1>图书管理后台</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="user-card">
+                <span>当前登录</span>
+                <strong th:text="${loginUser.nickname}">系统管理员</strong>
+                <em class="role-badge" th:text="${isAdmin} ? '管理员' : '普通用户'">管理员</em>
+            </div>
+            <a class="ghost-btn" th:href="@{/logout}">退出登录</a>
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <a class="tab-item active" th:href="@{/dashboard}">图书列表</a>
+        <a class="tab-item" th:href="@{/borrows}">借阅管理</a>
+        <a class="tab-item" th:href="@{/readers}">读者管理</a>
+    </nav>
+
+    <section class="panel list-panel">
+        <div class="panel-header panel-header-inline">
+            <div>
+                <h2>图书列表</h2>
+                <span th:text="'当前共 ' + ${total} + ' 本图书，每页 10 条'">当前共 0 本图书，每页 10 条</span>
+            </div>
+            <form class="search-bar" method="get" th:action="@{/dashboard}">
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="搜索书名或作者">
+                <button type="submit">搜索</button>
+            </form>
+        </div>
+
+        <div class="action-bar" th:if="${isAdmin}">
+            <a class="primary-btn" th:href="@{/books/new}">新增图书</a>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>书名</th>
+                    <th>作者</th>
+                    <th>分类</th>
+                    <th>ISBN</th>
+                    <th>库存</th>
+                    <th>出版社</th>
+                    <th th:if="${isAdmin}">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(books)}">
+                    <td th:colspan="${isAdmin} ? 8 : 7" class="empty-cell">暂无图书数据</td>
+                </tr>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.id}">1</td>
+                    <td>
+                        <strong th:text="${book.title}">书名</strong>
+                        <div class="sub-text" th:text="${book.description}">简介</div>
+                    </td>
+                    <td th:text="${book.author}">作者</td>
+                    <td th:text="${book.category}">分类</td>
+                    <td th:text="${book.isbn}">ISBN</td>
+                    <td th:text="${book.stock}">0</td>
+                    <td>
+                        <div th:text="${book.publisher} ?: '-'">出版社</div>
+                        <div class="sub-text" th:text="${book.publishDate} ?: ''"></div>
+                    </td>
+                    <td class="action-cell" th:if="${isAdmin}">
+                        <a class="table-link" th:href="@{'/books/edit/' + ${book.id}}">修改图书</a>
+                        <a class="table-link danger" th:href="@{'/books/delete/' + ${book.id}}" onclick="return confirm('确认删除这本图书吗？')">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-bar" th:if="${bookPage.totalPages > 0}">
+            <a class="page-btn"
+               th:if="${bookPage.hasPrevious()}"
+               th:href="@{/dashboard(page=${currentPage - 1}, keyword=${keyword})}">上一页</a>
+            <span class="page-btn disabled" th:if="${!bookPage.hasPrevious()}">上一页</span>
+            <span class="page-info" th:text="${currentPage + 1} + ' / ' + ${bookPage.totalPages}">1 / 1</span>
+            <div class="page-numbers">
+                <a class="page-btn"
+                   th:each="pageNumber : ${#numbers.sequence(0, bookPage.totalPages - 1)}"
+                   th:classappend="${pageNumber == currentPage} ? ' active' : ''"
+                   th:href="@{/dashboard(page=${pageNumber}, keyword=${keyword})}"
+                   th:text="${pageNumber + 1}">1</a>
+            </div>
+            <a class="page-btn"
+               th:if="${bookPage.hasNext()}"
+               th:href="@{/dashboard(page=${currentPage + 1}, keyword=${keyword})}">下一页</a>
+            <span class="page-btn disabled" th:if="${!bookPage.hasNext()}">下一页</span>
+        </div>
+    </section>
+</div>
+</body>
+</html>

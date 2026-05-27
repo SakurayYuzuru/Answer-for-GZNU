@@ -1,0 +1,5 @@
+.idea/
+target/
+*.log
+boot8081.out.log
+boot8081.err.log
